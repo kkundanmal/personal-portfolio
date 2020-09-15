@@ -88,7 +88,7 @@ country_list <- c("United States","India", "Germany")
 First, can you produce this plot?
 
 ```{r gdp1, echo=FALSE, out.width="100%"}
-knitr::include_graphics("./img/projects/gdp1.png", error = FALSE)
+knitr::include_graphics("img/projects/gdp1.png", error = FALSE)
 ```
 
 ```{r gdp_plot}
@@ -153,7 +153,7 @@ wider_frame %>%
 
 
 ```{r gdp2, echo=FALSE, out.width="100%"}
-knitr::include_graphics("/img/projects/gdp2.png", error = FALSE)
+knitr::include_graphics("img/projects/gdp2.png", error = FALSE)
 ```
 
 
