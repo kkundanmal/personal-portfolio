@@ -86,7 +86,7 @@ country_list <- c("United States","India", "Germany")
 ```
 
 First, can you produce this plot?
-![](img/projects/gdp1.png)
+![](/img/projects/gdp1.png)
 
 ```{r gdp1, echo=FALSE, out.width="100%"}
 #knitr::include_graphics("img/projects/gdp1.png", error = FALSE)
@@ -156,7 +156,7 @@ wider_frame %>%
 ```{r gdp2, echo=FALSE, out.width="100%"}
 #knitr::include_graphics("img/projects/gdp2.png", error = FALSE)
 ```
-![](img/projects/gdp2.png)
+![](/img/projects/gdp2.png)
 
 > What is this last chart telling you? Can you explain in a couple of paragraphs the different dynamic among these three countries? 
 
