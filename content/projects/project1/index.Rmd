@@ -1,5 +1,5 @@
 ---
-title: "Session 6: Homework 3 - Challenge 2"
+title: "Physical Activity and Weight in Highschoolers"
 author: "Kushal Kundanmal"
 date: "`r Sys.Date()`"
 output:
@@ -43,145 +43,165 @@ library(broom)
 library(tidyquant)
 library(infer)
 library(openintro)
+library(plotly)
+
+```
+# Physical Activity and Weight in Highschool students.
+In this analysis, we are going to study whether physical activity per week is related to weight in a sample of High School Students.
+
+## The data
+
+Every two years, the Centers for Disease Control and Prevention conduct the [Youth Risk Behavior Surveillance System (YRBSS)](https://www.cdc.gov/healthyyouth/data/yrbs/index.htm) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. We will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.
+
+## Load the data
+
+We first load the data that we will work with. This data is part of the `openintro` textbook. There are observations on 13 different variables, some categorical and some numerical. To get started, we first use `glimpse()` to gain initial insights into the data set.
+
+
+```{r}
+data(yrbss)
+glimpse(yrbss)
 ```
 
 
-# Challenge 2:GDP components over time and among countries
+## Exploratory Data Analysis
 
-At the risk of oversimplifying things, the main components of gross domestic product, GDP are personal consumption (C), business investment (I), government spending (G) and net exports (exports - imports). You can read more about GDP and the different approaches in calculating at the [Wikipedia GDP page](https://en.wikipedia.org/wiki/Gross_domestic_product).
+In a similar fashion, it is useful to check with `skim()` to get a feel for missing values, summary statistics of numerical variables, and a very rough histogram.
 
-The GDP data we will look at is from the [United Nations' National Accounts Main Aggregates Database](https://unstats.un.org/unsd/snaama/Downloads), which contains estimates of total GDP and its components for all countries from 1970 to today. We will look at how GDP and its components have changed over time, and compare different countries and how much each component contributes to that country's GDP. The file we will work with is [GDP and its breakdown at constant 2010 prices in US Dollars](http://unstats.un.org/unsd/amaapi/api/file/6) and it has already been saved in the Data directory. Have a look at the Excel file to see how it is structured and organised
+Looking at the weights variable, we see that we are missing 1004 observations. The distribution is right skewed, so with most observations clustering to the left.
+
+```{r, eda_on_weight}
+skim(yrbss)
+```
+
+Next, we consider the possible relationship between a high schooler’s weight and their physical activity. Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions.
+
+We create a new variable `physical_3plus`, which will be `yes` if they are physically active for at least 3 days a week, and `no` otherwise.
+
+```{r, physical_variable}
+# Create new variable physical_3plus, which indicates if a high schooler is physically active for at least 3 days a week or not
+
+yrbss <- yrbss %>% 
+  mutate(physical_3plus = ifelse(physically_active_7d >= 3, "yes", "no"))
+
+yrbss_summary <- yrbss %>% 
+  filter(!is.na(physical_3plus)) %>% 
+  group_by(physical_3plus) %>% 
+  summarise(count = n()) %>% 
+  mutate(prop= count/sum(count))
+yrbss_summary
+```
+
+Diving deeper into `physical_3plus`, we provide a 95% confidence interval for the high schoolers that are not active for at least 3 days a week.
 
 
-```{r read_GDP_data}
+```{r, confidence_interval}
 
-UN_GDP_data  <-  read_excel(here::here("data", "Download-GDPconstant-USD-countries.xls"), # Excel filename
-                sheet="Download-GDPconstant-USD-countr", # Sheet name
-                skip=2) # Number of rows to skip
+# Sum population
+count_pop <- sum(yrbss_summary$count)
+
+# Calculating the SE
+proportion_sample <- yrbss_summary$prop[1]
+se_pop <- sqrt((proportion_sample * (1 - proportion_sample))/count_pop)
+
+# Calculating the mean
+mean_pop <- se_pop/sqrt(count_pop)
+
+# t-critical value for 5% significance
+t_critical <- qt(0.975, count_pop - 1)
+lower_ci <- mean_pop - t_critical * se_pop
+upper_ci <- mean_pop + t_critical * se_pop
+print(paste("The 95% confidence interval for the population proportion of high schoolers that are not active 3 or more days per week is: [", round(lower_ci, digits=3), ",", round(upper_ci, digits=3), "].", sep = ""))
 
 ```
 
- The first thing you need to do is to tidy the data, as it is in wide format and you must make it into long, tidy format. Please express all figures in billions (divide values by `1e9`, or $10^9$), and you want to rename the indicators into something shorter.
+We expected physical activity to be quite influential on the weight of high schoolers. However, when looking at the box plot, the difference in weight for high schoolers who exercise more than 3 hours a week and for those who exercise less is not profound. Even more surprising is the observation that those that exercise more than 3 hours actually have a slightly higher weight. In addition, the two groups have roughly the same amount and size of outliers in weight values.
 
-
-```{r reshape_GDP_data}
-
-tidy_GDP_data <- UN_GDP_data %>% 
-  pivot_longer(4:51,names_to="year",values_to="gdp") %>% 
-  mutate(gdp=gdp/1e9,
-         IndicatorName=case_when(
-           IndicatorName=="Imports of goods and services"~"Imports",
-           IndicatorName=="Exports of goods and services"~"Exports",
-           IndicatorName=="General government final consumption expenditure"~"Government expenditure",
-           IndicatorName=="Household consumption expenditure (including Non-profit institutions serving households)"~"Household expenditure",
-           IndicatorName=="Gross Domestic Product (GDP)" ~"GDP",
-           TRUE ~ IndicatorName
-         ))
-
-glimpse(tidy_GDP_data)
-
-
-# Let us compare GDP components for these 3 countries
-country_list <- c("United States","India", "Germany")
+```{r, boxplot}
+#boxplot
+yrbss_clean <- na.omit(yrbss)
+ggplot(data = yrbss_clean, aes(x = physical_3plus, y= weight)) +
+  geom_boxplot() +
+  labs(title="Enough weekly exercise does not affect a high schooler's weight", 
+       subtitle="Relationship between weight and weekly physical exercise for high schoolers", 
+       x="Weekly physical exercise of 3 hours or more", 
+       y="Weight in kilograms")
+ 
+#calculating the mean and the median of the weight
+yrbss_clean %>%  group_by(physical_3plus)%>% summarize(mean  = mean(weight), median = median(weight))
 ```
 
-First, can you produce this plot?
+## Confidence Interval
 
-```{r gdp1, echo=FALSE, out.width="100%"}
-knitr::include_graphics("gdp1.png", error = FALSE)
+Boxplots show how the medians of the two distributions compare, but we can also compare the means of the distributions using either a confidence interval or a hypothesis test. Below, we display the mean, sd, se, count, t-critical value, margin of error, lower confidence bound, and upper confidence bound for the variable `weight` - where we distinguish again between those high schoolers who are active for at least 3 days a week and those who are not.
+
+
+```{r}
+yrbss %>%
+  group_by(physical_3plus) %>%
+  filter(!is.na(physical_3plus)) %>% 
+  summarise(mean_weight = mean(weight, na.rm = TRUE),
+            sd_weight = sd(weight, na.rm=TRUE),
+            count = n(),
+            se_weight = sd_weight/sqrt(count),
+            t_critical = qt(0.975, count-1), 
+            margin_of_error = t_critical * se_weight,
+            lower = mean_weight - t_critical * se_weight,
+            upper = mean_weight + t_critical * se_weight
+            )
+
 ```
 
-```{r gdp_plot}
+There is an observed difference of about 1.77kg (68.44 - 66.67), and we notice that the two confidence intervals do not overlap. It seems that the difference is at least 95% statistically significant. Let us also conduct a hypothesis test.
 
-gdp_plot <- tidy_GDP_data %>%
-  filter(Country %in% country_list,
-         IndicatorName %in% c("Government expenditure",
-                         "Exports","Imports",
-                         "Government expenditure",
-                         "Household expenditure",
-                         "Gross capital formation")) %>%
-  ggplot(aes(x=year,y=gdp,color=IndicatorName)) +
-  geom_point() +
-  scale_x_discrete(breaks=seq(1970,2017,10)) +
-  facet_wrap(~Country) +
-  theme_bw() +
-  labs(x="",y="Billion US$",title="GDP components over time",subtitle ="In constant 2010 USD")
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-  
-gdp_plot
+## Hypothesis test with formula
+The null hypothesis in this case states that the mean of the first group is equal to the mean of the second group. In other words, the difference in means equals zero. The alternative hypothesis states that these means are not equal.
+
+```{r}
+t.test(weight ~ physical_3plus, data = yrbss)
 ```
 
-Secondly, recall that GDP is the sum of Household Expenditure (Consumption *C*), Gross Capital Formation (business investment *I*), Government Expenditure (G) and Net Exports (exports - imports). Even though there is an indicator `Gross Domestic Product (GDP)` in your dataframe, I would like you to calculate it given its components discussed above.
+## Hypothesis test with `infer`
+Next, we will introduce a new function, `hypothesize`, that falls into the infer workflow. We will use this method for conducting hypothesis tests. First, we need to initialize the test, which we will save as `obs_diff`.
 
-```{r calc_gdp}
-filtered_data <- tidy_GDP_data %>%
-  filter(Country %in% country_list,
-         IndicatorName %in% c("Government expenditure",
-                         "Exports","Imports",
-                         "Government expenditure",
-                         "Household expenditure",
-                         "Gross capital formation",
-                         "GDP"))
+```{r}
+obs_diff <- yrbss %>%
+  specify(weight ~ physical_3plus) %>%
+  calculate(stat = "diff in means", order = c("yes", "no"))
 
-  
-wider_frame <- filtered_data %>% pivot_wider(names_from=IndicatorName,values_from=gdp)
-wider_frame <- wider_frame %>%
-  mutate(calc_gdp=`Household expenditure`+`Gross capital formation`+`Government expenditure`+(Exports-Imports))
-wider_frame %>% select(Country,year,GDP,calc_gdp)
-  
 ```
 
-> What is the % difference between what you calculated as GDP and the GDP figure included in the dataframe?
+Now, we simulate the test on the null distribution, which we will save as null.
 
-```{r percent_difference}
-# using the percent difference formula from https://www.calculatorsoup.com/calculators/algebra/percent-difference-calculator.php
-wider_frame <- wider_frame %>% 
-  select(Country,year,GDP,calc_gdp) %>% 
-  mutate(percent_diff=round(100*abs(calc_gdp - GDP)/((calc_gdp+GDP)/2),2))
-wider_frame
+```{r}
+null_dist <- yrbss %>%
+  specify(weight ~ physical_3plus) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "diff in means", order = c("yes", "no"))
 
-# summarise the differences by country
-wider_frame %>%
-  group_by(Country) %>% 
-  summarise(mean_percent_diff=mean(percent_diff))
-
-#summarise the differences by year
-wider_frame %>%
-  group_by(year) %>% 
-  summarise(mean_percent_diff=round(mean(percent_diff),2))
 ```
 
 
-```{r gdp2, echo=FALSE, out.width="100%"}
-#knitr::include_graphics("img/projects/gdp2.png", error = FALSE)
+Here, `hypothesize` is used to set the null hypothesis as a test for independence, i.e., that there is no difference between the two population means. Also, the `type` argument within generate is set to permute, which is the argument when generating a null distribution for a hypothesis test. We can visualize this null distribution with the following code:
+
+```{r}
+ggplot(data = null_dist, aes(x = stat)) +
+  geom_histogram()
+
 ```
-![](gdp2.png)
 
-> What is this last chart telling you? Can you explain in a couple of paragraphs the different dynamic among these three countries? 
+Finally, we visualise the test and look at the `obs_diff`.
+We see that obs_diff = 1.77
 
-Based on the above charts, we can observe some interesting patterns. 
-Firstly, all three countries have Household Expenditure as their largest GDP component, which has been consistently >50% throughout the range of years. Secondly Net Exports is consistently the lowest GDP component for all three countries. Germany is the only country that seems to have a positive Net Export component after the year 2000.
-We can also notice that India has experienced a large(>10%) decline in Household Consumption and an increase (>10%) in Business Investment from 1970 to 2017.
+```{r}
 
+null_dist %>% visualize() +
+  shade_p_value(obs_stat = obs_diff, direction = "two-sided")
 
-> If you want to, please change `country_list <- c("United States","India", "Germany")` to include your own country and compare it with any two other countries you like
+null_dist %>%
+  get_p_value(obs_stat = obs_diff, direction = "two_sided")
 
-```{r custom_countries}
-cust_country_list <- c("Sri Lanka","Netherlands","United Kingdom")
-gdp_plot_cust <- tidy_GDP_data %>%
-  filter(Country %in% cust_country_list,
-         IndicatorName %in% c("Government expenditure",
-                         "Exports","Imports",
-                         "Government expenditure",
-                         "Household expenditure",
-                         "Gross capital formation")) %>%
-  ggplot(aes(x=year,y=gdp,color=IndicatorName)) +
-  geom_point() +
-  scale_x_discrete(breaks=seq(1970,2017,10)) +
-  facet_wrap(~Country) +
-  theme_bw() +
-  labs(x="",y="Billion US$",title="GDP components over time",subtitle ="In constant 2010 USD") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-  
-gdp_plot_cust
 ```
+## Conclusion
+We can see that there is a statistically significant difference in means between the two groups. On average, the group that exercises 3 or more times per week is between 2.42kg to 1.12kg heavier than the group that does not exercise at least 3 times per week.

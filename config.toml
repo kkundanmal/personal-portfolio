@@ -92,28 +92,28 @@ disqusShortname = ""
     # Display your showcases here.
     
     [[params.tiles.showcase]]
-      title = "GDP components over time and among countries"
-      subtitle = "Homework 3"
-      image = "projects/gdp1.png"
+      title = "Physical Activity and Weight in Highschool students"
+      subtitle = "An Analysis"
+      image = "projects/activity.jpg"
       url = "projects/project1"
 
     [[params.tiles.showcase]]
-      title = "Tempus"
-      subtitle = "Feugiat Amet Tempus"
-      image = "pic02.jpg"
-      url = "blogs/tempus"
+      title = "Salary Discrimination by Gender"
+      subtitle = "An Analysis"
+      image = "projects/salary.jpg"
+      url = "projects/project2"
 
     [[params.tiles.showcase]]
-      title = "Magna"
-      subtitle = "Lorem Etiam Nullam"
-      image = "pic03.jpg"
+      title = "Social Media Usage by Education Level"
+      subtitle = "An Analysis"
+      image = "projects/social-media.png"
       url = "blogs/magna"
 
     [[params.tiles.showcase]]
-      title = "Ipsum"
-      subtitle = "Nisl Sed Aliquam"
-      image = "pic04.jpg"
-      url = "blogs/ipsum"
+      title = "Airbnb in Copenhagen - a Price Forecast Analysis"
+      subtitle = "Group Project"
+      image = "projects/airbnb.jpg"
+      url = "projects/project4"
 
     #[[params.tiles.showcase]]
     #  title = "Consequat"
@@ -137,7 +137,7 @@ disqusShortname = ""
 
   # Section Type Two
   [params.two]
-    enable = true
+    enable = false
     title = "Massa libero"
     subtitle = """Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero. 
     Mauris aliquet magna magna sed nunc rhoncus pharetra. 
@@ -187,7 +187,7 @@ disqusShortname = ""
   # Footer section
   [params.footer]
     enable = true
-    copyright = "Company Name"
+    copyright = "Kushal Kundanmal"
 
     # Uses font awesome icons
     #[[params.footer.social]]
@@ -215,7 +215,7 @@ disqusShortname = ""
       url= "https://www.linkedin.com/in/kundanmal"
       label = "LinkedIn"
 
-    #[[params.footer.quicklinks]]
-    #  text = "Design: "
-    #  url= "https://www.html5up.net"
-    #  alt = "HTML5 UP"
+    [[params.footer.quicklinks]]
+      text = "Learn More About Me:"
+      url= "http://www.kundanmal.ca"
+      alt = "My Website"
