@@ -48,8 +48,8 @@ disqusShortname = ""
       url = "#"
 
     [[params.navigation.links]]
-      name = "Projects"
-      url = "projects"
+      name = "Personal Site"
+      url = "http://www.kundanmal.ca"
 
     #[[params.navigation.links]]
     #  name = "Generic Blog"
