@@ -1,7 +1,7 @@
 # Site settings
 baseURL = "https://kushal-portfolio.netlify.app/"
 languageCode = "en-us"
-title = "Forty"
+title = "Kushal Kundanmal - Portfolio"
 theme = "forty"
 
 # Enter your tracking code to enable Google Analytics
