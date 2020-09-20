@@ -107,7 +107,7 @@ disqusShortname = ""
       title = "Social Media Usage by Education Level"
       subtitle = "An Analysis"
       image = "projects/social-media.png"
-      url = "blogs/magna"
+      url = "projects/project3"
 
     [[params.tiles.showcase]]
       title = "Airbnb in Copenhagen - a Price Forecast Analysis"

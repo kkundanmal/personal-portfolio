@@ -6,19 +6,38 @@
     <description>Recent content on Forty</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 14 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 19 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://kushal-portfolio.netlify.app/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Session 6: Homework 3 - Challenge 2</title>
+      <title>Education Level Vs Social Media Usage</title>
+      <link>https://kushal-portfolio.netlify.app/projects/project3/</link>
+      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://kushal-portfolio.netlify.app/projects/project3/</guid>
+      <description>General Social Survey (GSS) In this analysis, we will be taking a look how social media (Twitter, Instagram, Snapchat and Email) usage differs by education levels. The data we use, comes from a 2016 General Social Survey.
+gss &amp;lt;- read_csv(here::here(&amp;quot;data&amp;quot;, &amp;quot;smallgss2016.csv&amp;quot;), na = c(&amp;quot;&amp;quot;, &amp;quot;Don&amp;#39;t know&amp;quot;, &amp;quot;No answer&amp;quot;, &amp;quot;Not applicable&amp;quot;)) Instagram and Snapchat, by sex We have calculated the 95% confidence interval for the proportion of Snapchat and Instagram users in 2016.</description>
+    </item>
+    
+    <item>
+      <title>Physical Activity and Weight in Highschoolers</title>
       <link>https://kushal-portfolio.netlify.app/projects/project1/</link>
-      <pubDate>Mon, 14 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://kushal-portfolio.netlify.app/projects/project1/</guid>
-      <description>Challenge 2:GDP components over time and among countries At the risk of oversimplifying things, the main components of gross domestic product, GDP are personal consumption (C), business investment (I), government spending (G) and net exports (exports - imports). You can read more about GDP and the different approaches in calculating at the Wikipedia GDP page.
-The GDP data we will look at is from the United Nations’ National Accounts Main Aggregates Database, which contains estimates of total GDP and its components for all countries from 1970 to today.</description>
+      <description>Physical Activity and Weight in Highschool students. In this analysis, we are going to study whether physical activity per week is related to weight in a sample of High School Students.
+The data Every two years, the Centers for Disease Control and Prevention conduct the Youth Risk Behavior Surveillance System (YRBSS) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. We will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.</description>
+    </item>
+    
+    <item>
+      <title>Salary Discrimination by Gender</title>
+      <link>https://kushal-portfolio.netlify.app/projects/project2/</link>
+      <pubDate>Sat, 19 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://kushal-portfolio.netlify.app/projects/project2/</guid>
+      <description>Omega Group plc- Pay Discrimination At the last board meeting of Omega Group Plc., the headquarters of a large multinational company, the issue was raised that women were being discriminated in the company, in the sense that the salaries were not the same for male and female executives. A quick analysis of a sample of 50 employees (of which 24 men and 26 women) revealed that the average salary for men was about 8,700 higher than for women.</description>
     </item>
     
     <item>
@@ -66,6 +85,15 @@ The GDP data we will look at is from the United Nations’ National Accounts Mai
       <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
 You can embed an R code chunk like this:
 summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+    </item>
+    
+    <item>
+      <title>Airbnb in Copenhagen - a Price Forecast Analysis</title>
+      <link>https://kushal-portfolio.netlify.app/projects/project4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kushal-portfolio.netlify.app/projects/project4/</guid>
+      <description>Executive Summary Airbnb is a community where guests can book living accommodations from a list of hosts. However, when an individual user books for a stay, it is hard to predict the quality and the price of a rental since there are no formal controls presented in the Airbnb. The aim of this work is to analyse data about Airbnb listings in Copenhagen and fit a model to predict the total cost for two people staying 4 nights in an Airbnb.</description>
     </item>
     
   </channel>
