@@ -878,3 +878,5 @@ mean(forecast_value$predic_error) #240.6411
 The goal of this research was to predict the price of an Airbnb listing for 4 nights and 2 guests. We chose our final best model based on the highest adjusted R squared value (0.631) which was `model8_sqft2`. We found that on average, our forecast was off by a little more than 10%.
 
 Overall, we found that the following aspect increase the price for an Airbnb listing for 4 nights and 2 guests. Being in zone 4, i.e. neighborhood Indre By, contributes most to the increase in price. After this, being an exotic property type, i.e. "Other", is the second highest factor that contributes to raising the price. Interestingly, review scores did not prove to be a significant influence to the price of a listing. Finally, one more noteworthy observation is the fact that a private room type has an adverse effect on the price of a property.
+
+**Note:** This Analysis was done as a collaboration by: *Kushal Kundanmal, Neel Kamal Puri, Ollie Ayton, Selin Beijersbergen and Yuxue Sang.*
